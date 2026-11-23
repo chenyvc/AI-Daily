@@ -1,122 +1,592 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>我的 AI 科技日報・2026-11-23</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;900&display=swap" rel="stylesheet">
-<style>
-  /* 只要改「我的設定」的主色，整頁的重點色就跟著換 */
-  :root {
-    --accent: #b0412e;
-    --paper: #f6f3ec; --card: #ffffff; --ink: #1c1a17; --soft: #5c5850; --faint: #8f8a80;
-    --line: #e3ddd1; --tint: color-mix(in srgb, var(--accent) 9%, var(--card));
-    --serif: "Noto Serif TC", "Songti TC", serif;
-    --sans: "Noto Sans TC", -apple-system, "PingFang TC", sans-serif;
-  }
-  @media (prefers-color-scheme: dark) {
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>我的 AI 科技日報・2026-11-23</title>
+
+  <style>
     :root {
-      --paper: #16150f; --card: #211f19; --ink: #f1ede4; --soft: #c2bcb0; --faint: #8b857a;
-      --line: #36322a; --tint: color-mix(in srgb, var(--accent) 18%, var(--card));
+      --accent: #b0412e;
+      --accent-text: color-mix(in srgb, var(--accent) 72%, #172127);
+      --paper: #f3f5f5;
+      --card: #fff;
+      --ink: #172127;
+      --soft: #46575e;
+      --muted: #57676e;
+      --line: #d7e0e2;
+      --tint: color-mix(in srgb, var(--accent) 8%, var(--card));
+      --sans: system-ui, -apple-system, "Segoe UI", "PingFang TC",
+        "Microsoft JhengHei", sans-serif;
+      --mono: ui-monospace, "SFMono-Regular", Consolas, monospace;
+      color-scheme: light dark;
     }
-  }
-  * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
-  body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--sans); line-height: 1.7; overflow-wrap: anywhere; }
-  a { color: inherit; text-decoration: none; }
-  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
 
-  /* 刊頭 */
-  header.wrap { padding-top: 28px; }
-  .dateline { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-size: 13px; color: var(--soft); border-bottom: 1px solid var(--ink); padding-bottom: 8px; }
-  header h1 { font-family: var(--serif); font-weight: 900; font-size: clamp(26px, 8vw, 64px); line-height: 1.15; text-align: center; margin: 18px 0 12px; letter-spacing: .04em; }
-  header h1::after { content: ""; display: block; width: 56px; height: 4px; background: var(--accent); margin: 14px auto 0; border-radius: 2px; }
-  .edition { text-align: center; color: var(--soft); font-size: 14px; margin: 0 0 18px; }
-  .edition b { color: var(--accent); }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --paper: #11191d;
+        --card: #1a252b;
+        --ink: #edf3f5;
+        --soft: #c6d3d8;
+        --muted: #aabcc3;
+        --line: #37484f;
+        --accent-text: color-mix(in srgb, var(--accent) 38%, #fff);
+        --tint: color-mix(in srgb, var(--accent) 13%, var(--card));
+      }
+    }
 
-  /* 分類導覽：手機可以左右滑 */
-  nav { position: sticky; top: 0; z-index: 5; background: color-mix(in srgb, var(--paper) 88%, transparent); backdrop-filter: blur(8px); border-top: 3px double var(--ink); border-bottom: 1px solid var(--line); }
-  nav .wrap { display: flex; gap: 8px; overflow-x: auto; padding-top: 10px; padding-bottom: 10px; scrollbar-width: none; }
-  nav a { flex: none; font-size: 14px; padding: 4px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--card); white-space: nowrap; }
-  nav a b { margin-left: 6px; color: var(--accent); font-weight: 700; }
-  nav a:hover { border-color: var(--accent); }
+    * { box-sizing: border-box; }
+    html { scroll-padding-top: 80px; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+      line-height: 1.65;
+      overflow-wrap: anywhere;
+    }
 
-  main.wrap { padding-top: 28px; padding-bottom: 40px; }
-  .eyebrow { font-size: 12px; letter-spacing: .2em; color: var(--accent); font-weight: 700; margin: 0 0 6px; }
+    a { color: inherit; text-decoration: none; }
+    a:focus-visible {
+      outline: 2px solid var(--accent-text);
+      outline-offset: 4px;
+    }
 
-  /* 今日首選 */
-  .pick { position: relative; background: var(--card); border-radius: 18px; padding: 28px 32px; margin-bottom: 36px; box-shadow: 0 1px 0 var(--line), 0 18px 40px -24px rgba(0,0,0,.25); overflow: hidden; }
-  .pick::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 6px; background: var(--accent); }
-  .pick-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; }
-  .pick h2 { margin: 0; font-size: 14px; letter-spacing: .2em; color: var(--accent); }
-  .pick-score { display: none; }
-  .dots { display: inline-flex; gap: 4px; }
-  .dots i { width: 10px; height: 10px; border-radius: 50%; border: 1.5px solid var(--accent); }
-  .dots i.on { background: var(--accent); }
-  .pick h3 { font-family: var(--serif); font-weight: 900; font-size: clamp(24px, 3.6vw, 36px); line-height: 1.4; margin: 14px 0 14px; }
-  .pick h3 a:hover { color: var(--accent); }
-  .pick-why { background: var(--tint); border-radius: 12px; padding: 14px 18px; margin: 0 0 16px; font-size: 16px; }
-  .pick-why strong { color: var(--accent); }
-  .pick-tags { display: flex; flex-wrap: wrap; gap: 8px; }
-  .pick-tags span { background: var(--accent); color: #fff; border-radius: 999px; padding: 3px 12px; font-size: 13px; font-weight: 500; }
-  .pick .meta { margin: 14px 0 0; color: var(--faint); font-size: 13px; }
+    .wrap {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding-inline: clamp(16px, 4vw, 32px);
+    }
 
-  /* 本週熱詞 */
-  div.hot { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 22px 26px; margin-bottom: 40px; }
-  div.hot h2 { font-family: var(--serif); font-size: 22px; margin: 0; }
-  div.hot > p { margin: 2px 0 14px; color: var(--faint); font-size: 13px; }
-  div.hot ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px 28px; }
-  div.hot li { display: grid; grid-template-columns: 1fr; gap: 4px; padding: 8px 0; border-bottom: 1px dashed var(--line); }
-  div.hot .word { font-weight: 700; }
-  div.hot .word b { display: inline-block; font-size: 11px; line-height: 1; padding: 4px 7px; border-radius: 6px; background: var(--accent); color: #fff; margin-left: 4px; vertical-align: 2px; }
-  div.hot .word b.b-new { background: var(--ink); color: var(--paper); }
-  div.hot .bar { height: 6px; background: var(--line); border-radius: 3px; overflow: hidden; }
-  div.hot .bar span { display: block; height: 100%; background: var(--faint); border-radius: 3px; }
-  div.hot li.hot .bar span, div.hot li.new .bar span { background: var(--accent); }
-  div.hot .num { font-size: 12px; color: var(--faint); }
+    /* 刊頭與分類導覽 */
+    header { border-top: 5px solid var(--accent); }
+    header .wrap { padding-block: 26px 24px; }
 
-  /* 各類別 */
-  section.cat { margin-bottom: 40px; scroll-margin-top: 64px; }
-  section.cat h2 { font-family: var(--serif); font-size: 26px; margin: 0 0 16px; padding-bottom: 8px; border-bottom: 2px solid var(--ink); display: flex; align-items: baseline; gap: 10px; }
-  section.cat h2 small { font-family: var(--sans); font-size: 13px; font-weight: 500; color: var(--accent); }
-  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; }
-  article { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; display: flex; flex-direction: column; transition: transform .15s ease, box-shadow .15s ease; }
-  article:hover { transform: translateY(-2px); box-shadow: 0 12px 28px -18px rgba(0,0,0,.35); }
-  article .src { display: flex; justify-content: space-between; gap: 8px; margin: 0 0 6px; font-size: 12px; color: var(--accent); font-weight: 700; letter-spacing: .04em; }
-  article .src time { color: var(--faint); font-weight: 400; }
-  article h3 { font-family: var(--serif); font-size: 19px; line-height: 1.5; margin: 0 0 10px; }
-  article h3 a:hover { color: var(--accent); }
-  .short { font-weight: 700; margin: 0 0 6px; }
-  .long { color: var(--soft); font-size: 15px; margin: 0 0 12px; }
-  .kws { margin: auto 0 0; display: flex; flex-wrap: wrap; gap: 6px; }
-  .kw { font-size: 12px; padding: 2px 9px; border-radius: 999px; background: var(--paper); color: var(--soft); border: 1px solid var(--line); }
-  .kw.is-hot { color: var(--accent); border-color: var(--accent); font-weight: 700; }
+    .dateline, .edition {
+      color: var(--muted);
+      font-size: 13px;
+      margin: 0;
+    }
 
-  footer { border-top: 1px solid var(--line); padding: 20px 0 40px; color: var(--faint); font-size: 13px; text-align: center; }
+    .dateline, .num, time { font-variant-numeric: tabular-nums; }
 
-  @media (max-width: 480px) {
-    .wrap { padding: 0 16px; }
-    .pick { padding: 22px 20px 22px 24px; border-radius: 14px; }
-    div.hot { padding: 18px; }
-    .grid { grid-template-columns: 1fr; }
-    .dateline span:last-child { display: none; }
-  }
-</style>
+    header h1 {
+      margin: 6px 0 8px;
+      font-size: clamp(28px, 6vw, 54px);
+      font-weight: 800;
+      letter-spacing: -.025em;
+      line-height: 1.18;
+    }
+
+    .edition b { color: var(--accent-text); }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      background: var(--paper);
+      border-block: 1px solid var(--line);
+    }
+
+    nav:has(.wrap:empty) { display: none; }
+
+    nav .wrap {
+      display: flex;
+      gap: 8px;
+      padding-block: 10px;
+      overflow-x: auto;
+      scrollbar-width: thin;
+    }
+
+    nav a {
+      flex: 0 0 auto;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--card);
+      padding: 4px 11px;
+      white-space: nowrap;
+      font-size: 13px;
+    }
+
+    nav a:hover { border-color: var(--accent-text); }
+
+    nav a b {
+      margin-left: 6px;
+      color: var(--accent-text);
+      font-family: var(--mono);
+    }
+
+    main.wrap { padding-block: 24px 44px; }
+
+    /* 今日首選 */
+    .pick {
+      margin-bottom: 24px;
+      padding: clamp(18px, 4vw, 34px);
+      border: 1px solid var(--line);
+      border-inline-start: 5px solid var(--accent);
+      border-radius: 16px;
+      background: var(--tint);
+    }
+
+    .pick-heading {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px 16px;
+    }
+
+    .pick h2 {
+      margin: 0;
+      color: var(--accent-text);
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .pick h3 {
+      margin: 10px 0 12px;
+      max-width: 48ch;
+      font-size: clamp(22px, 4vw, 36px);
+      font-weight: 800;
+      line-height: 1.28;
+    }
+
+    .pick-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+
+    .pick-tags span {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 3px 10px;
+      color: var(--accent-text);
+      font-size: 12px;
+    }
+
+    .pick .meta { margin: 12px 0 0; color: var(--muted); font-size: 13px; }
+
+    /* 本週熱詞 */
+    .hot-panel {
+      margin-bottom: 32px;
+      padding: clamp(16px, 3vw, 24px);
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+    }
+
+    .hot-panel h2 { margin: 0; font-size: 21px; }
+
+    .hot-panel > p {
+      margin: 3px 0 12px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .hot-panel ul {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 255px), 1fr));
+      gap: 8px 24px;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .hot-panel li {
+      display: grid;
+      gap: 5px;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .hot-panel .word { font-weight: 700; }
+
+    .hot-panel .word b {
+      display: inline-block;
+      margin-left: 4px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: var(--tint);
+      color: var(--accent-text);
+      font-size: 11px;
+    }
+
+    .hot-panel .word .b-new { background: var(--paper); color: var(--ink); }
+
+    .hot-panel .bar {
+      height: 5px;
+      background: var(--line);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .hot-panel .bar span {
+      display: block;
+      height: 100%;
+      background: var(--muted);
+      border-radius: 999px;
+    }
+
+    .hot-panel li.hot .bar span,
+    .hot-panel li.new .bar span { background: var(--accent); }
+
+    .hot-panel .num { color: var(--muted); font-size: 12px; }
+
+    /* 分類與新聞卡片 */
+    .cat { margin-bottom: 30px; }
+
+    .cat h2 {
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 0 0 12px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--line);
+      font-size: clamp(20px, 3vw, 25px);
+    }
+
+    .cat h2 small { color: var(--accent-text); font-size: 12px; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 310px), 1fr));
+      gap: 14px;
+    }
+
+    .grid article {
+      min-width: 0;
+      padding: 16px 18px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+    }
+
+    article .src {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 4px 10px;
+      margin: 0 0 6px;
+      color: var(--accent-text);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    article .src time { color: var(--muted); font-weight: 400; }
+
+    article h3 {
+      margin: 0 0 9px;
+      font-size: 18px;
+      font-weight: 750;
+      line-height: 1.4;
+    }
+
+    h3 a:hover { color: var(--accent-text); text-decoration: underline; }
+
+    .short { margin: 0 0 5px; font-size: 15px; font-weight: 700; }
+    .long { margin: 0 0 10px; color: var(--soft); font-size: 14px; }
+
+    .kws {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 9px 0 0;
+    }
+
+    .kw {
+      padding: 2px 8px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--paper);
+      color: var(--soft);
+      font-size: 12px;
+    }
+
+    .kw.is-hot {
+      border-color: var(--accent-text);
+      background: var(--tint);
+      color: var(--accent-text);
+      font-weight: 700;
+    }
+
+    footer {
+      padding-block: 16px 28px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 12px;
+    }
+  </style>
 </head>
+
 <body>
-<header class="wrap">
-  <div class="dateline"><span>2026-11-23・台北時間</span><span>資料期間 2026-11-17 至 2026-11-23 對比 2026-10-27 至 2026-11-16</span></div>
-  <h1>我的 AI 科技日報</h1>
-  <p class="edition">本期 <b>20</b> 則・由 n8n 與 Gemini 自動編輯</p>
-</header>
-<nav aria-label="新聞分類"><div class="wrap"><a href="#cat-1">AI 與軟體<b>3</b></a><a href="#cat-2">晶片與硬體<b>2</b></a><a href="#cat-3">資安<b>3</b></a><a href="#cat-4">雲端與企業 IT<b>1</b></a><a href="#cat-5">產業與市場<b>7</b></a><a href="#cat-6">政策與社會<b>3</b></a><a href="#cat-7">其他<b>1</b></a></div></nav>
-<main class="wrap">
-  <section class="pick" aria-labelledby="pick-title"><div class="pick-heading"><h2 id="pick-title">今日首選</h2><span class="pick-score"><span class="dots" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i class=""></i></span>3 分／滿分 4 分</span></div><h3><a href="https://finance.technews.tw/2026/11/23/jensen-huang-departure-sparks-ai-chaos-taiwan-stock-hot-money-shifts-cybersecurity-traditional-sectors-avoid-risky-stocks/" target="_blank" rel="noopener noreferrer">後黃仁勳時代的台股生存戰：資金逆流傳產，拆解四大抗跌新寵與一類高風險地雷股</a></h3><p class="pick-why"><strong>為什麼值得發：</strong>點名台灣市場與知名企業家，並提供具體四大類股配置建議。</p><div class="pick-tags"><span>在地／點名</span><span>具體</span><span>熱詞</span></div><p class="meta">科技新報・產業與市場</p></section>
-  <div class="hot"><p class="eyebrow">TRENDING</p><h2>本週熱詞</h2><p>本週出現次數對比前三週平均（Asia/Taipei）</p><ul><li class="hot"><span class="word">金管會 <b>熱</b></span><span class="bar"><span style="width:100%"></span></span><span class="num">本週 6 次・平常每週 0.33 次・5.25 倍</span></li><li class="hot"><span class="word">晶片出口 <b>熱</b></span><span class="bar"><span style="width:100%"></span></span><span class="num">本週 7 次・平常每週 0.67 次・4.8 倍</span></li><li class="hot"><span class="word">出口管制 <b>熱</b></span><span class="bar"><span style="width:100%"></span></span><span class="num">本週 8 次・平常每週 1 次・4.5 倍</span></li><li class="hot"><span class="word">禁空令 <b>熱</b> <b class="b-new">新</b></span><span class="bar"><span style="width:100%"></span></span><span class="num">本週 3 次・平常每週 0 次・4 倍</span></li><li class="hot"><span class="word">電網 <b>熱</b></span><span class="bar"><span style="width:75%"></span></span><span class="num">本週 4 次・平常每週 0.67 次・3 倍</span></li><li class="new"><span class="word">語音助理 <b class="b-new">新</b></span><span class="bar"><span style="width:75%"></span></span><span class="num">本週 2 次・平常每週 0 次・3 倍</span></li><li class="new"><span class="word">釣魚攻擊 <b class="b-new">新</b></span><span class="bar"><span style="width:75%"></span></span><span class="num">本週 2 次・平常每週 0 次・3 倍</span></li><li class="hot"><span class="word">AI 晶片 <b>熱</b></span><span class="bar"><span style="width:46%"></span></span><span class="num">本週 13 次・平常每週 6.67 次・1.83 倍</span></li><li class="hot"><span class="word">AI 投資 <b>熱</b></span><span class="bar"><span style="width:43%"></span></span><span class="num">本週 3 次・平常每週 1.33 次・1.71 倍</span></li><li class="hot"><span class="word">台股 <b>熱</b></span><span class="bar"><span style="width:42%"></span></span><span class="num">本週 14 次・平常每週 8 次・1.67 倍</span></li></ul></div>
-  <section class="cat" id="cat-1"><h2>AI 與軟體 <small>3 則</small></h2><div class="grid"><article><p class="src">科技新報<time>11/23 08:00</time></p><h3><a href="https://technews.tw/2026/11/23/google-gemini-in-mazda-cx-5/" target="_blank" rel="noopener noreferrer">AI 進入汽車駕駛座：日本車廠掀起智慧座艙新競爭</a></h3><p class="short">馬自達新款 CX-5 搭載智慧座艙參與競爭</p><p class="long">日本車廠馬自達在主力休旅車新款 CX-5 的多國規格中，搭載了最新的車載智慧座艙系統。此舉象徵 AI 正式進駐汽車駕駛座，並引發日系車廠間的新技術競爭。</p><p class="kws"><span class="kw">馬自達</span><span class="kw">CX-5</span><span class="kw">智慧座艙</span><span class="kw">車載系統</span></p></article><article><p class="src">科技新報<time>11/23 07:40</time></p><h3><a href="https://finance.technews.tw/2026/11/23/uncovering-hidden-costs-ai-adoption-businesses/" target="_blank" rel="noopener noreferrer">AI 產出「做半套」，隱形補位工時正吞噬企業效能</a></h3><p class="short">AI 補位工時侵蝕企業效能，產出僅「做半套」</p><p class="long">企業投資 AI 時常忽略員工需花費額外時間修正 AI 不完整的產出。這類難以量化的「隱形補位工時」正影響企業預期的效能，甚至吞噬了原有的生產力提升。</p><p class="kws"><span class="kw is-hot">AI 投資</span><span class="kw">補位工時</span><span class="kw">企業效能</span><span class="kw">隱形成本</span></p></article><article><p class="src">INSIDE<time>11/23 07:38</time></p><h3><a href="https://www.inside.com.tw/article/42978-google-retires-nest-app-jan-2027-assistant-speakers-displays-aug-2027-gemini-for-home" target="_blank" rel="noopener noreferrer">Google 宣布智慧音箱與螢幕的語音助理 8 月全面更新為 Gemini for Home</a></h3><p class="short">Google 語音助理 8 月更新為 Gemini for Home</p><p class="long">Google 宣布 Nest app 將於 2027 年停用，現有裝置由 Home app 接管。智慧音箱與螢幕的語音助理則將在 2027 年 8 月正式由 Gemini for Home 取代。</p><p class="kws"><span class="kw">Google</span><span class="kw">Nest</span><span class="kw">Gemini for Home</span><span class="kw is-hot">語音助理</span></p></article></div></section><section class="cat" id="cat-2"><h2>晶片與硬體 <small>2 則</small></h2><div class="grid"><article><p class="src">科技新報<time>11/23 08:15</time></p><h3><a href="https://finance.technews.tw/2026/11/23/rapiduss-2nm-process-yield-hits-zero/" target="_blank" rel="noopener noreferrer">Rapidus 2 奈米製程傳出瓶頸，SRAM 良率掛零使日本半導體復興面臨考驗</a></h3><p class="short">日本 Rapidus 2 奈米製程 SRAM 良率掛零</p><p class="long">肩負日本半導體復興使命的 Rapidus 遭遇挫折，其 2 奈米製程的 SRAM 良率目前傳出為零。這項重大瓶頸使日本先進半導體自主化的目標面臨嚴峻考驗。</p><p class="kws"><span class="kw">Rapidus</span><span class="kw">2 奈米</span><span class="kw">SRAM</span><span class="kw">日本半導體</span></p></article><article><p class="src">科技新報<time>11/23 07:00</time></p><h3><a href="https://technews.tw/2026/11/23/samsung-electronics-memory-production-capacity-is-nearly-sold-out-through-2029/" target="_blank" rel="noopener noreferrer">三星電子至 2029 年記憶體產能幾近售罄，客戶搶簽長約至 2031 年</a></h3><p class="short">三星記憶體產能售罄至 2029，客戶搶簽長約</p><p class="long">全球 AI 資料中心需求旺盛，三星電子 2029 年前的記憶體產能已幾近完售。客戶為確保供應，甚至已開始搶簽長約至 2031 年，顯示整體記憶體供應極度緊繃。</p><p class="kws"><span class="kw">三星電子</span><span class="kw">記憶體</span><span class="kw">AI 資料中心</span><span class="kw">HBM</span></p></article></div></section><section class="cat" id="cat-3"><h2>資安 <small>3 則</small></h2><div class="grid"><article><p class="src">iThome<time>11/23 08:11</time></p><h3><a href="https://www.ithome.com.tw/news/180676" target="_blank" rel="noopener noreferrer">微軟揭露GitHub Copilot CLI釣魚攻擊風險，駭客恐藉合法登入程序操控AI代理</a></h3><p class="short">微軟揭 GitHub Copilot CLI 釣魚風險</p><p class="long">微軟研究發現駭客可利用合法驗證碼機制，誘騙開發者登入以取得存取權。此釣魚攻擊不僅可能導致開發資料外洩，攻擊者還能遠端操控 AI 代理執行命令。</p><p class="kws"><span class="kw">GitHub Copilot CLI</span><span class="kw">微軟</span><span class="kw is-hot">釣魚攻擊</span><span class="kw">AI 代理</span></p></article><article><p class="src">iThome<time>11/23 08:11</time></p><h3><a href="https://www.ithome.com.tw/news/180668" target="_blank" rel="noopener noreferrer">俄羅斯駭客Cold Relic竊取企業資料後，冒充受害組織員工發動網釣攻擊</a></h3><p class="short">俄國駭客冒充員工，發動高成功率釣魚攻擊</p><p class="long">俄羅斯駭客 Cold Relic 在竊取企業資料後，利用所得資訊冒充受害組織員工發動攻擊。Google 調查指出，這類利用熟人關係的偽裝大幅提高了網路釣魚的成功率。</p><p class="kws"><span class="kw">Cold Relic</span><span class="kw">網路釣魚</span><span class="kw">Google</span><span class="kw">駭客</span></p></article><article><p class="src">科技新報<time>11/23 07:10</time></p><h3><a href="https://infosecu.technews.tw/2026/11/23/google-finds-hackers-using-ai-agents-to-build-and-run-exploits-from-software-patches/" target="_blank" rel="noopener noreferrer">GTIC 報告：漏洞利用、AI Infra 與網路釣魚正在成為 AI 代理駭客三大獲利源</a></h3><p class="short">Google 報告揭 AI 代理駭客三大獲利源</p><p class="long">Google 威脅情報小組報告顯示，漏洞利用、AI 基礎設施與網路釣魚已成為 AI 代理駭客的獲利來源。報告指出，滲透測試框架的採用標誌著攻擊手段正持續演進。</p><p class="kws"><span class="kw">Google</span><span class="kw">網路釣魚</span><span class="kw">AI Infra</span><span class="kw">漏洞利用</span></p></article></div></section><section class="cat" id="cat-4"><h2>雲端與企業 IT <small>1 則</small></h2><div class="grid"><article><p class="src">科技新報<time>11/23 08:10</time></p><h3><a href="https://technews.tw/2026/11/23/future-data-centers-behind-the-meter-power-generation-technology/" target="_blank" rel="noopener noreferrer">從用電怪獸變身電網後盾，資料中心擁抱「表後供電」重塑能源架構</a></h3><p class="short">資料中心採表後供電，轉型為電網支援者</p><p class="long">在 AI 浪潮帶動下，資料中心從單純的「用電大戶」轉型為主動參與能源架構的角色。透過採用「表後供電」模式，資料中心正重塑其與電網之間的供需關係。</p><p class="kws"><span class="kw">資料中心</span><span class="kw">AI</span><span class="kw">表後供電</span><span class="kw is-hot">電網</span></p></article></div></section><section class="cat" id="cat-5"><h2>產業與市場 <small>7 則</small></h2><div class="grid"><article><p class="src">科技新報<time>11/23 08:25</time></p><h3><a href="https://finance.technews.tw/2026/11/23/south-korea-prepares-launch-stock-stabilization-fund-ease-share-buyback-rules-tighten-short-selling-regulations-avert-market-crash/" target="_blank" rel="noopener noreferrer">韓國防股災，準備啟動護盤基金放寬庫藏股嚴管放空</a></h3><p class="short">韓國因 AI 投資轉冷啟動股市穩定基金救市</p><p class="long">韓國金融當局鑒於 AI 投資氣氛惡化恐引發股災，於 22 日召開會議準備啟動股市穩定基金。政府同時將放寬企業購買庫藏股限制，並加強監督放空交易以穩定市場。</p><p class="kws"><span class="kw">韓國股市</span><span class="kw">股市穩定基金</span><span class="kw">庫藏股</span><span class="kw">放空交易</span></p></article><article><p class="src">科技新報<time>11/23 08:20</time></p><h3><a href="https://finance.technews.tw/2026/11/23/jensen-huang-departure-sparks-ai-chaos-taiwan-stock-hot-money-shifts-cybersecurity-traditional-sectors-avoid-risky-stocks/" target="_blank" rel="noopener noreferrer">後黃仁勳時代的台股生存戰：資金逆流傳產，拆解四大抗跌新寵與一類高風險地雷股</a></h3><p class="short">台股資金轉向傳產，拆解後黃仁勳時代配置</p><p class="long">輝達執行長黃仁勳帶動的 AI 熱潮降溫後，台股資金開始流向傳統產業。市場正在拆解四大抗跌新寵，並提醒投資人注意特定高風險地雷股的風險。</p><p class="kws"><span class="kw is-hot">台股</span><span class="kw">輝達</span><span class="kw">黃仁勳</span><span class="kw">傳產</span></p></article><article><p class="src">科技新報<time>11/23 08:15</time></p><h3><a href="https://technews.tw/2026/11/23/softbanks-masayoshi-son-explored-1-trillion-moonshot-buyout-of-sk-hynix/" target="_blank" rel="noopener noreferrer">傳軟銀曾想砸 1 兆美元買 SK 海力士  計畫已擱置</a></h3><p class="short">傳軟銀曾考慮斥資 1 兆美元收購 SK 海力士</p><p class="long">日本軟銀集團執行長孫正義傳出曾考慮以高達 1 兆美元的規模，收購韓國記憶體大廠 SK 海力士。然而，該項龐大的計畫目前據悉已經擱置。</p><p class="kws"><span class="kw">軟銀</span><span class="kw">孫正義</span><span class="kw">SK 海力士</span><span class="kw">收購</span></p></article><article><p class="src">科技新報<time>11/23 07:30</time></p><h3><a href="https://finance.technews.tw/2026/11/23/15-selected-constituents-of-taiwan-hidden-gem-index/" target="_blank" rel="noopener noreferrer">證交所推「台灣璞玉指數」，從 394 檔低關注績優股中找成長股</a></h3><p class="short">證交所推台灣璞玉指數，挖掘低關注績優股</p><p class="long">台灣證券交易所推廣「台灣璞玉指數」，旨在從 394 檔目前關注度較低的績優股中挑選具成長潛力的企業。此舉旨在幫助投資人發現優質企業的合理市場價值。</p><p class="kws"><span class="kw">證交所</span><span class="kw">台灣璞玉指數</span><span class="kw">績優股</span><span class="kw">投資人</span></p></article><article><p class="src">科技新報<time>11/23 07:20</time></p><h3><a href="https://technews.tw/2026/11/23/ai-investment-real-economy-bottleneck-materials-scientist-ten-year-tax/" target="_blank" rel="noopener noreferrer">AI 投資破兆卻難走入實體經濟？材料科學家揭「十年稅」成最大瓶頸</a></h3><p class="short">科學家揭「十年稅」瓶頸阻礙 AI 落地實體經濟</p><p class="long">材料科學家指出，AI 進入實體經濟的最大障礙是材料研發平均需耗時十年的過程。這項被稱為「十年稅」的瓶頸，使得即便有龐大投資，AI 應用仍難以快速規模化。</p><p class="kws"><span class="kw is-hot">AI 投資</span><span class="kw">材料科學</span><span class="kw">十年稅</span><span class="kw">實體經濟</span></p></article><article><p class="src">中央社產經證券<time>11/22 22:22</time></p><h3><a href="https://www.cna.com.tw/news/aopl/202611220194.aspx" target="_blank" rel="noopener noreferrer">韓國防股災　準備啟動護盤基金放寬庫藏股嚴管放空</a></h3><p class="short">韓國因應 AI 投資惡化，祭出放寬庫藏股救市</p><p class="long">韓國金融當局鑒於 AI 投資氣氛惡化及股市大跌風險，決定啟動股市穩定基金。配套措施包含為期 3 個月放寬企業購買庫藏股規模，並加強監督放空交易。</p><p class="kws"><span class="kw">韓國金融當局</span><span class="kw">股市穩定基金</span><span class="kw">庫藏股</span><span class="kw">放空交易</span></p></article><article><p class="src">科技新報<time>11/22 09:03</time></p><h3><a href="https://finance.technews.tw/2026/11/22/total-no-fly-zone/" target="_blank" rel="noopener noreferrer">台股上週崩跌 7,641 點！國安基金證實進場、金管會祭「全面禁空令」救市</a></h3><p class="short">台股崩跌 7,641 點，國安基金與禁空令齊出</p><p class="long">受輝達執行長辭職傳聞及美國 AI 監管趨嚴影響，台股上週崩跌 7,641 點。國安基金證實進場護盤，金管會亦祭出「全面禁空令」以穩定市場秩序。</p><p class="kws"><span class="kw is-hot">台股</span><span class="kw">國安基金</span><span class="kw is-hot">金管會</span><span class="kw is-hot">禁空令</span></p></article></div></section><section class="cat" id="cat-6"><h2>政策與社會 <small>3 則</small></h2><div class="grid"><article><p class="src">科技新報<time>11/23 07:50</time></p><h3><a href="https://infosecu.technews.tw/2026/11/23/california-sues-openai/" target="_blank" rel="noopener noreferrer">養出 AI 駭客？OpenAI 被加州政府告上法院</a></h3><p class="short">加州政府控告 OpenAI，憂 AI 代理失控成駭客</p><p class="long">加州政府因擔心 OpenAI 的「AI 代理程式」可能演變成自動執行破壞任務的駭客，已對其提起訴訟。官方憂慮若演算法失控，將對網路安全造成巨大威脅。</p><p class="kws"><span class="kw">OpenAI</span><span class="kw">加州政府</span><span class="kw">AI 代理程式</span><span class="kw">法律訴訟</span></p></article><article><p class="src">中央社產經證券<time>11/22 09:54</time></p><h3><a href="https://www.cna.com.tw/news/afe/202611220026.aspx" target="_blank" rel="noopener noreferrer">黃仁勳去職美嚴控AI產業　重大事件和供應鏈看法一次看</a></h3><p class="short">傳黃仁勳辭職及美嚴控晶片出口，震驚 AI 產業界</p><p class="long">傳出黃仁勳辭去輝達要職後，美國正嚴控 AI 先進晶片銷往中國及東南亞。美國國會也罕見公開出口許可，川普政府預計將更嚴格審查晶片出口流向以維護國安。</p><p class="kws"><span class="kw">黃仁勳</span><span class="kw">輝達</span><span class="kw is-hot">晶片出口</span><span class="kw">美國國會</span></p></article><article><p class="src">INSIDE<time>11/20 15:37</time></p><h3><a href="https://www.inside.com.tw/article/42970-us-commerce-ai-chip-export-licenses-china-nvidia-h200-879000" target="_blank" rel="noopener noreferrer">美商務部核准逾 87.9 萬顆 AI 晶片銷中 議員質疑「出口管制失靈」</a></h3><p class="short">美核准 87.9 萬顆晶片銷中，國會質疑管制失靈</p><p class="long">美國商務部核准逾 87.9 萬顆 AI 晶片銷往中國，部分買家包含軍方企業，引發國安疑慮。國會議員要求加強監督輝達與超微的出口審批，並建議收緊管制政策。</p><p class="kws"><span class="kw">美國商務部</span><span class="kw is-hot">AI 晶片</span><span class="kw is-hot">出口管制</span><span class="kw">輝達</span><span class="kw">超微</span></p></article></div></section><section class="cat" id="cat-7"><h2>其他 <small>1 則</small></h2><div class="grid"><article><p class="src">科技新報<time>11/23 08:30</time></p><h3><a href="https://technews.tw/2026/11/23/offshore-wind-farms-can-break-up-low-clouds/" target="_blank" rel="noopener noreferrer">離岸風場與低空雲層雙向影響，荷蘭研究揭風機可使雲層消散</a></h3><p class="short">荷蘭研究顯示離岸風機可使低空雲層消散</p><p class="long">荷蘭特溫特大學研究指出，離岸風場與低空雲層具雙向影響，風機能使雲層消散。目前多數風能研究多假設天空晴朗，此發現揭示了風機對大氣環境的實際影響。</p><p class="kws"><span class="kw">離岸風場</span><span class="kw">特溫特大學</span><span class="kw">風能</span><span class="kw">雲層消散</span></p></article></div></section>
-</main>
-<footer><div class="wrap">這份日報每天早上由我自己做的 n8n 流程自動產生</div></footer>
+  <header>
+    <div class="wrap">
+      <p class="dateline">2026-11-23・臺北時間</p>
+      <h1>我的 AI 科技日報</h1>
+      <p class="edition">本期 <b>20</b> 則</p>
+    </div>
+  </header>
+
+  <nav aria-label="新聞分類">
+    <div class="wrap"><a href="#cat-1">AI 模型與應用<b>2</b></a><a href="#cat-2">半導體與先進封裝<b>2</b></a><a href="#cat-3">電子製造與硬體供應鏈<b>4</b></a><a href="#cat-6">軟體與企業 IT<b>1</b></a><a href="#cat-7">資安與隱私<b>5</b></a><a href="#cat-8">科技產業與投融資<b>4</b></a><a href="#cat-9">科技政策與監管<b>1</b></a><a href="#cat-10">其他<b>1</b></a></div>
+  </nav>
+
+  <main class="wrap">
+    
+  <section class="pick" aria-labelledby="pick-title">
+    <div class="pick-heading">
+      <h2 id="pick-title">今日首選</h2>
+      <div class="pick-tags">
+        <span>入選新聞中有 1 篇相關報導</span>
+      </div>
+    </div>
+    <h3><a href="https://technews.tw/2026/11/23/daiwa-see-acter/" target="_blank" rel="noopener noreferrer">擴廠無塵室需求旺！聖暉在手訂單衝 840 億元，大和喊目標價 1,415 元</a></h3>
+    <p class="short">聖暉在手訂單達 840 億元創高，日系外資看好 AI 需求調升目標價。</p><p class="long">聖暉工程科技（聖暉）受惠於人工智慧（AI）基礎建設與半導體產業持續擴產，帶動全球無塵室工程需求升溫。日系外資大和（Daiwa）發布報告指出，聖暉目前在手訂單已衝上 840 億元新台幣，並將其目標價調升至 1,415 元。</p><p class="kws"><span class="kw">聖暉</span><span class="kw">無塵室</span><span class="kw">AI 基礎建設</span><span class="kw">半導體</span></p>
+    <p class="meta">科技新報・電子製造與硬體供應鏈</p>
+  </section>
+
+    <section class="hot-panel" aria-labelledby="weekly-trends">
+      <h2 id="weekly-trends">本週熱詞</h2>
+      <p>近 7 日新聞標題出現次數，對比再往前 3 週的每週平均。</p>
+      <ul>
+    <li class="hot">
+      <span class="word">Apache
+        <b>熱</b>
+        
+      </span>
+      <span class="bar"><span style="width:90%"></span></span>
+      <span class="num">本週 5 次・前三週平均每週 0.67 次・3.6 倍</span>
+    </li>
+    <li class="hot">
+      <span class="word">泰國
+        <b>熱</b>
+        
+      </span>
+      <span class="bar"><span style="width:88%"></span></span>
+      <span class="num">本週 6 次・前三週平均每週 1 次・3.5 倍</span>
+    </li>
+    <li class="hot">
+      <span class="word">川普
+        <b>熱</b>
+        
+      </span>
+      <span class="bar"><span style="width:83%"></span></span>
+      <span class="num">本週 19 次・前三週平均每週 5 次・3.33 倍</span>
+    </li>
+    <li class="new">
+      <span class="word">資安重訊
+        
+        <b class="b-new">新</b>
+      </span>
+      <span class="bar"><span style="width:75%"></span></span>
+      <span class="num">本週 2 次・前三週平均每週 0 次・3 倍</span>
+    </li>
+    <li class="new">
+      <span class="word">ASUS EXPERTHUB
+        
+        <b class="b-new">新</b>
+      </span>
+      <span class="bar"><span style="width:75%"></span></span>
+      <span class="num">本週 2 次・前三週平均每週 0 次・3 倍</span>
+    </li>
+    <li class="new">
+      <span class="word">Cairn
+        
+        <b class="b-new">新</b>
+      </span>
+      <span class="bar"><span style="width:75%"></span></span>
+      <span class="num">本週 2 次・前三週平均每週 0 次・3 倍</span>
+    </li>
+    <li class="hot">
+      <span class="word">零時差漏洞
+        <b>熱</b>
+        
+      </span>
+      <span class="bar"><span style="width:53%"></span></span>
+      <span class="num">本週 6 次・前三週平均每週 2.33 次・2.1 倍</span>
+    </li>
+    <li class="hot">
+      <span class="word">Anthropic
+        <b>熱</b>
+        
+      </span>
+      <span class="bar"><span style="width:44%"></span></span>
+      <span class="num">本週 48 次・前三週平均每週 26.67 次・1.77 倍</span>
+    </li>
+    <li class="hot">
+      <span class="word">Apple
+        <b>熱</b>
+        
+      </span>
+      <span class="bar"><span style="width:42%"></span></span>
+      <span class="num">本週 9 次・前三週平均每週 5 次・1.67 倍</span>
+    </li>
+    <li class="hot">
+      <span class="word">輝達
+        <b>熱</b>
+        
+      </span>
+      <span class="bar"><span style="width:40%"></span></span>
+      <span class="num">本週 86 次・前三週平均每週 53.33 次・1.6 倍</span>
+    </li></ul>
+    </section>
+
+    
+  <section class="cat" id="cat-1">
+    <h2>AI 模型與應用 <small>2 則</small></h2>
+    <div class="grid">
+      
+        <article>
+          <p class="src">經濟日報<time>11/23 13:21</time></p>
+          <h3><a href="https://money.udn.com/money/story/5612/9896214" target="_blank" rel="noopener noreferrer">報告：AI職缺需求持續升溫　化學相關製造成長逾7成</a></h3>
+          <p class="short">資策會報告：AI 人才需求跨業擴張，化學相關製造業職缺成長逾 7 成。</p><p class="long">資策會與 1111 人力銀行共同發布報告，指出人工智慧（AI）人才需求已不限於科技業，開始延伸至製造、物流及建築等領域。其中，化學相關製造業對 AI 人才的需求成長超過 70%，顯示產業數位轉型對職能需求的變動。</p><p class="kws"><span class="kw">資策會</span><span class="kw">1111人力銀行</span><span class="kw">化學相關製造</span></p>
+        </article>
+        <article>
+          <p class="src">INSIDE<time>11/23 13:08</time></p>
+          <h3><a href="https://www.inside.com.tw/article/42984-ai-agents-vs-physical-ai-differences" target="_blank" rel="noopener noreferrer">AI Agent 與物理 AI 差在出錯之後，軟體留得下日誌、機器人失誤無法回滾</a></h3>
+          <p class="short">Gartner 指出 37% 企業已部署 AI 代理，專家警告物理 AI 事故風險更高。</p><p class="long">根據 Gartner 調查，37% 的資訊長（CIO）已部署 AI 代理（AI Agent）。雖然軟體 AI 代理存在刪除郵件或洩露個資風險，但專家指出「物理 AI」如機器人若出錯，其失誤將直接對產線與人員造成損害且無法復原，與軟體能保留日誌查驗不同。</p><p class="kws"><span class="kw">AI Agent</span><span class="kw">物理 AI</span><span class="kw">Gartner</span><span class="kw">OWASP</span></p>
+        </article>
+    </div>
+  </section>
+  <section class="cat" id="cat-2">
+    <h2>半導體與先進封裝 <small>2 則</small></h2>
+    <div class="grid">
+      
+        <article>
+          <p class="src">經濟日報<time>11/23 12:52</time></p>
+          <h3><a href="https://money.udn.com/money/story/5612/9896149" target="_blank" rel="noopener noreferrer">登豐微電子搶攻AI電源管理商機 打入輝達GB10平台</a></h3>
+          <p class="short">登豐微預計 12 月中上櫃，電源管理 IC 已切入輝達與聯發科開發平台。</p><p class="long">登豐微電子（Denfeng）預定 12 月中旬掛牌上櫃。公司專注於電源管理 IC，已打入輝達（NVIDIA）、超微（AMD）等供應鏈。隨著 AI 運算延伸至終端，公司已切入輝達與聯發科（MediaTek）合作開發的 GB10 平台，搶攻 AI 終端電源管理商機。</p><p class="kws"><span class="kw">登豐微</span><span class="kw">電源管理IC</span><span class="kw is-hot">輝達</span><span class="kw">聯發科</span></p>
+        </article>
+        <article>
+          <p class="src">科技新報<time>11/23 12:45</time></p>
+          <h3><a href="https://technews.tw/2026/11/23/ming-chi-kuo-google-cuts-millions-broadcom-tpus-mediatek-benefit/" target="_blank" rel="noopener noreferrer">郭明錤爆 Google 砍博通百萬顆 TPU  聯發科受惠？</a></h3>
+          <p class="short">郭明錤稱 Google 削減博通 TPU 訂單，聯發科有望受惠供應鏈移轉。</p><p class="long">天風國際證券分析師郭明錤指出，Google 已下修 2027 年由博通（Broadcom）代工的 TPU 訂單約百萬顆。市場預期此變動可能與 Google 尋求多元供應商有關，台灣晶片大廠聯發科（MediaTek）被視為潛在的受惠對象。</p><p class="kws"><span class="kw">Google</span><span class="kw">博通</span><span class="kw">聯發科</span><span class="kw">TPU</span></p>
+        </article>
+    </div>
+  </section>
+  <section class="cat" id="cat-3">
+    <h2>電子製造與硬體供應鏈 <small>4 則</small></h2>
+    <div class="grid">
+      
+        <article>
+          <p class="src">科技新報<time>11/23 13:46</time></p>
+          <h3><a href="https://technews.tw/2026/11/23/daiwa-see-acter/" target="_blank" rel="noopener noreferrer">擴廠無塵室需求旺！聖暉在手訂單衝 840 億元，大和喊目標價 1,415 元</a></h3>
+          <p class="short">聖暉在手訂單達 840 億元創高，日系外資看好 AI 需求調升目標價。</p><p class="long">聖暉工程科技（聖暉）受惠於人工智慧（AI）基礎建設與半導體產業持續擴產，帶動全球無塵室工程需求升溫。日系外資大和（Daiwa）發布報告指出，聖暉目前在手訂單已衝上 840 億元新台幣，並將其目標價調升至 1,415 元。</p><p class="kws"><span class="kw">聖暉</span><span class="kw">無塵室</span><span class="kw">AI 基礎建設</span><span class="kw">半導體</span></p>
+        </article>
+        <article>
+          <p class="src">INSIDE<time>11/23 13:13</time></p>
+          <h3><a href="https://www.inside.com.tw/article/42981-apple-2027-spring-iphone-18-air-2-macbook-neo-launch" target="_blank" rel="noopener noreferrer">Apple 明年春季傳連發 8 款新品！二代 iPhone Air、新 MacBook Neo 都將登場</a></h3>
+          <p class="short">蘋果明年春季傳發布 8 款新品，iPhone Air 二代將採 A20 Pro 晶片。</p><p class="long">市場傳出蘋果（Apple）將於明年春季分兩波發布 8 款新品。第二波預計於 3 月或 4 月登場，其中 iPhone Air 2 傳將採用 A20 Pro 晶片，並優化超廣角相機、縮小動態島設計及延長電池續航力。此外，MacBook Neo 也預期同步亮相。</p><p class="kws"><span class="kw is-hot">Apple</span><span class="kw">iPhone Air</span><span class="kw">A20 Pro</span><span class="kw">MacBook Neo</span></p>
+        </article>
+        <article>
+          <p class="src">MoneyDJ 理財網<time>11/23 11:02</time></p>
+          <h3><a href="https://www.moneydj.com/kmdj/news/newsviewer.aspx?a=6a9ae10a-3d9d-4756-95ea-af4dd024d07e&amp;utm_source=1896965718965718561657965956&amp;utm_medium=RSS" target="_blank" rel="noopener noreferrer">AI伺服器簽約後還漲價？傳交貨前加價最多45%</a></h3>
+          <p class="short">AI 伺服器成本居高不下，傳出部分廠商交貨前加價最高達 45%。</p><p class="long">受限於核心零組件缺貨與漲價，AI 伺服器市場出現劇烈價格波動。業界傳出部分供應商因成本暴增，在產品交貨前要求客戶加價，最高漲幅甚至達到 45%，對下游採購方造成沉重財務負擔。</p>
+        </article>
+        <article>
+          <p class="src">MoneyDJ 理財網<time>11/23 07:09</time></p>
+          <h3><a href="https://www.moneydj.com/kmdj/news/newsviewer.aspx?a=68c1be88-7f12-4d53-ac8b-b506b0c07723&amp;utm_source=1896965718965718561657965956&amp;utm_medium=RSS" target="_blank" rel="noopener noreferrer">記憶體飆漲衝擊 日本智慧手機出貨量萎縮1成</a></h3>
+          <p class="short">記憶體漲價連累手機產業，日本智慧型手機出貨量萎縮 1 成。</p><p class="long">記憶體晶片價格持續攀升，嚴重衝擊終端產品利潤。日本市場最新數據顯示，由於零組件成本過高導致售價調整或供應受阻，日本智慧型手機的出貨量已萎縮約 10%，顯示 AI 熱潮帶動的零件漲價正反噬消費性電子市場。</p><p class="kws"><span class="kw">記憶體</span><span class="kw">出貨量</span></p>
+        </article>
+    </div>
+  </section>
+  <section class="cat" id="cat-6">
+    <h2>軟體與企業 IT <small>1 則</small></h2>
+    <div class="grid">
+      
+        <article>
+          <p class="src">經濟日報<time>11/23 13:24</time></p>
+          <h3><a href="https://money.udn.com/money/story/5612/9896226" target="_blank" rel="noopener noreferrer">ASUS EXPERTHUB 跨出台灣！前進泰國拓展 AI 軟硬整合商機</a></h3>
+          <p class="short">華碩商用解決方案進軍泰國，攜手台灣軟體業者搶攻 AI 軟硬整合商機。</p><p class="long">華碩（ASUS）持續深化商用市場，其 ASUS EXPERTHUB 解決方案響應國發會「AI 軟硬共融整合輸出計畫」，攜手中華民國資訊軟體服務商業同業公會，率領多家台灣軟體服務供應商（ISV）前往泰國參與產業交流會，協助台灣技術落地東南亞。</p><p class="kws"><span class="kw">華碩</span><span class="kw is-hot">ASUS EXPERTHUB</span><span class="kw is-hot">泰國</span></p>
+        </article>
+    </div>
+  </section>
+  <section class="cat" id="cat-7">
+    <h2>資安與隱私 <small>5 則</small></h2>
+    <div class="grid">
+      
+        <article>
+          <p class="src">科技新報<time>11/23 12:50</time></p>
+          <h3><a href="https://infosecu.technews.tw/2026/11/23/chinese-hackers-leverage-ai-agents-launch-automated-attacks/" target="_blank" rel="noopener noreferrer">Amazon 揭露：中國駭客出動自主 AI 代理，僅 11 分鐘挖出零時差漏洞攻陷大學伺服器</a></h3>
+          <p class="short">亞馬遜揭露中國駭客利用自主 AI 代理，僅用 11 分鐘即攻陷伺服器漏洞。</p><p class="long">亞馬遜（Amazon）資安團隊揭露一起疑似中國背景的網攻事件。駭客使用名為「Cairn」的自主 AI 代理，在短短 11 分鐘內即挖掘出零時差漏洞並攻陷某大學伺服器，顯示 AI 技術已大幅加速駭客自動化攻擊的效率與精準度。</p><p class="kws"><span class="kw">Amazon</span><span class="kw is-hot">Cairn</span><span class="kw">AI 代理</span><span class="kw is-hot">零時差漏洞</span></p>
+        </article>
+        <article>
+          <p class="src">iThome<time>11/23 12:11</time></p>
+          <h3><a href="https://www.ithome.com.tw/news/180711" target="_blank" rel="noopener noreferrer">新加坡CSA警告Apache HTTP/2重大漏洞已遭積極利用，公開PoC也已流傳</a></h3>
+          <p class="short">新加坡發布 Apache HTTP/2 重大漏洞警告，已有公開攻擊程式流傳。</p><p class="long">新加坡網路安全局（CSA）針對 Apache HTTP Server 的 HTTP/2 模組漏洞（CVE-2026-119618）發布警訊。該漏洞 CVSS 評分達 8.1 分，可能導致遠端執行程式碼（RCE），目前已傳出遭攻擊者利用，且已有公開的概念驗證（PoC）程式流傳。</p><p class="kws"><span class="kw is-hot">Apache</span><span class="kw">HTTP/2</span><span class="kw">CVE-2026-119618</span><span class="kw">新加坡網路安全局</span></p>
+        </article>
+        <article>
+          <p class="src">iThome<time>11/23 12:11</time></p>
+          <h3><a href="https://www.ithome.com.tw/news/180707" target="_blank" rel="noopener noreferrer">Apache Tomcat傳出重大漏洞，可能導致未經身分驗證攻擊者加入受信任伺服器叢集</a></h3>
+          <p class="short">Apache Tomcat 揭露重大身分驗證漏洞，恐致駭客冒充受信任伺服器。</p><p class="long">Apache Tomcat 揭露重大漏洞（CVE-2026-133325），涉及 TLS 1.3 搭配預先共享金鑰（TLS-PSK）的通訊過程。由於未能有效驗證對端身分，遠端攻擊者只要能連線至叢集通訊服務，即可冒充受信任伺服器，威脅企業 Java Web 應用程式安全。</p><p class="kws"><span class="kw">Apache Tomcat</span><span class="kw">CVE-2026-133325</span><span class="kw">TLS-PSK</span></p>
+        </article>
+        <article>
+          <p class="src">iThome<time>11/23 12:11</time></p>
+          <h3><a href="https://www.ithome.com.tw/news/180708" target="_blank" rel="noopener noreferrer">社群交友服務業者尚凡揭露不明IP位址侵入資訊設備，旗下iPair、SweetRing公告系統維護</a></h3>
+          <p class="short">社群軟體業者尚凡遭不明 IP 侵入，iPair 與 SweetRing 緊急維護。</p><p class="long">上櫃公司尚凡國際創新科技（5278）公告發生資安事件，發現不明 IP 位址侵入公司資訊設備。公司隨即啟動緊急應變機制，旗下知名的交友平台 iPair 及 SweetRing 已進行系統維護。目前評估對公司營運無重大影響。</p><p class="kws"><span class="kw">尚凡</span><span class="kw">iPair</span><span class="kw">SweetRing</span><span class="kw">資安事件</span></p>
+        </article>
+        <article>
+          <p class="src">iThome<time>11/23 12:11</time></p>
+          <h3><a href="https://www.ithome.com.tw/news/180706" target="_blank" rel="noopener noreferrer">全國電子發布資安重訊，會員收到含真實個資的假訂單釣魚郵件，來源待查</a></h3>
+          <p class="short">全國電子會員收到含真實個資的釣魚郵件，公司發布重訊提醒防範。</p><p class="long">上市通路業者全國電子（6281）發布資安重訊，指出部分會員收到冒名寄發的虛假訂單郵件。經查郵件內含真實的會員姓名、電子郵件及卡號，懷疑資料遭第三方非法利用進行釣魚詐騙。公司正進一步調查資料洩露來源。</p><p class="kws"><span class="kw">全國電子</span><span class="kw">釣魚郵件</span><span class="kw is-hot">資安重訊</span></p>
+        </article>
+    </div>
+  </section>
+  <section class="cat" id="cat-8">
+    <h2>科技產業與投融資 <small>4 則</small></h2>
+    <div class="grid">
+      
+        <article>
+          <p class="src">科技新報<time>11/23 12:40</time></p>
+          <h3><a href="https://finance.technews.tw/2026/11/23/ai-servers-surge-contract-price-hikes/" target="_blank" rel="noopener noreferrer">記憶體暴漲 4 倍釀連鎖效應，AI 伺服器廠簽約後再向客戶加價</a></h3>
+          <p class="short">記憶體成本暴漲 4 倍，戴爾等 AI 伺服器大廠傳對客戶加價以反映壓力。</p><p class="long">AI 伺服器供應鏈面臨嚴峻成本壓力，記憶體價格暴漲 4 倍造成連鎖反應。據悉，包含戴爾（Dell）、慧與（HPE）及美超微（Supermicro）等伺服器廠，已出現與客戶簽約後再度加價的情況，以反映零組件端不斷攀升的採購成本。</p><p class="kws"><span class="kw">記憶體</span><span class="kw">AI 伺服器</span><span class="kw">Dell</span></p>
+        </article>
+        <article>
+          <p class="src">MoneyDJ 理財網<time>11/23 11:03</time></p>
+          <h3><a href="https://www.moneydj.com/kmdj/news/newsviewer.aspx?a=230888ae-94ff-4a50-87b8-06532d68fd83&amp;utm_source=1896965718965718561657965956&amp;utm_medium=RSS" target="_blank" rel="noopener noreferrer">Anthropic、SpaceX掀IPO熱潮 投行狂賺10億美元</a></h3>
+          <p class="short">Anthropic 與 SpaceX 掀 IPO 熱潮，華爾街投行估賺進 10 億美元。</p><p class="long">由 AI 獨角獸 Anthropic 與太空技術龍頭 SpaceX 帶動的上市熱潮，讓負責承銷的投資銀行收益豐厚。市場預估這些指標性企業的募資與上市行動，將為華爾街投行創造高達 10 億美元的手續費收入。</p><p class="kws"><span class="kw is-hot">Anthropic</span><span class="kw">SpaceX</span><span class="kw">IPO</span></p>
+        </article>
+        <article>
+          <p class="src">華爾街日報<time>11/23 11:00</time></p>
+          <h3><a href="https://www.wsj.com/finance/investing/anthropic-committed-to-spend-900-billion-wall-street-expects-its-debt-to-be-junk-5514d55d?mod=rss_Technology" target="_blank" rel="noopener noreferrer">Anthropic Committed to Spend $900 Billion. Wall Street Expects Its Debt to Be Junk.</a></h3>
+          <p class="short">Anthropic 鉅額支出引發信用隱憂，華爾街預期其債務評等恐降至垃圾級。</p><p class="long">人工智慧新創公司 Anthropic 承諾了高達 9,000 億美元的支出計劃，此舉引發華爾街對其財務健康度的關注。投行與分析師預期，該公司的信用評等可能被歸類為垃圾級（Junk），這將直接影響其未來的融資計畫與 AI 產業競爭布局。</p><p class="kws"><span class="kw is-hot">Anthropic</span></p>
+        </article>
+        <article>
+          <p class="src">中央社產經證券<time>11/23 10:46</time></p>
+          <h3><a href="https://www.cna.com.tw/news/afe/202611230042.aspx" target="_blank" rel="noopener noreferrer">全球AI信心危機延燒　韓股重挫跌回年初水準</a></h3>
+          <p class="short">AI 信心危機衝擊韓股，KOSPI 指數重挫跌回今年初水準。</p><p class="long">全球市場對 AI 成長前景產生疑慮，引發信心危機。韓國股市受此衝擊，KOSPI 指數盤中跌破 4,700 點，回落至今年初的起漲點水準。儘管證券業認為已進入超賣區，但整體市場氛圍仍趨向保守。</p><p class="kws"><span class="kw">KOSPI</span><span class="kw">韓國股市</span><span class="kw">超賣</span></p>
+        </article>
+    </div>
+  </section>
+  <section class="cat" id="cat-9">
+    <h2>科技政策與監管 <small>1 則</small></h2>
+    <div class="grid">
+      
+        <article>
+          <p class="src">MoneyDJ 理財網<time>11/23 07:54</time></p>
+          <h3><a href="https://www.moneydj.com/kmdj/news/newsviewer.aspx?a=3b7be020-f791-400f-b52a-57e9e3635951&amp;utm_source=1896965718965718561657965956&amp;utm_medium=RSS" target="_blank" rel="noopener noreferrer">川普又揮關稅大刀 美企海外蓋資料中心恐挨重稅</a></h3>
+          <p class="short">川普擬對在海外興建資料中心的美企課徵重稅，恐衝擊全球布局。</p><p class="long">美國前總統川普近期提議，若美國企業選擇在海外興建資料中心而非留在美國本土，將面臨高額關稅或重稅。此舉旨在迫使科技巨頭將算力設施留在國內，但也可能大幅增加美企在全球資料中心布局的成本。</p><p class="kws"><span class="kw is-hot">川普</span><span class="kw">關稅</span><span class="kw">資料中心</span></p>
+        </article>
+    </div>
+  </section>
+  <section class="cat" id="cat-10">
+    <h2>其他 <small>1 則</small></h2>
+    <div class="grid">
+      
+        <article>
+          <p class="src">科技新報<time>11/23 13:00</time></p>
+          <h3><a href="https://ccc.technews.tw/2026/11/23/35-year-old-super-nintendo-chatgpt/" target="_blank" rel="noopener noreferrer">35 歲「超級任天堂」也能聊 AI，神人借力〈耀西島〉同款加速晶片讓 ChatGPT 登上古董主機</a></h3>
+          <p class="short">開發者利用老舊超級任天堂加速晶片，成功讓 35 歲古董主機連結 ChatGPT。</p><p class="long">一名開發者利用高齡 35 歲的經典主機超級任天堂（SNES），搭配當年《耀西島》（Yoshi&#39;s Island）同款的加速晶片，製作出一款可運作的 AI 聊天機器人介面，成功讓 ChatGPT 登上這款古董遊戲機台，展現復古硬體的技術潛力。</p><p class="kws"><span class="kw">超級任天堂</span><span class="kw">ChatGPT</span><span class="kw">加速晶片</span><span class="kw">SNES</span></p>
+        </article>
+    </div>
+  </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      由 n8n 與 Gemini 自動編輯
+      ・熱詞比較期間 2026-11-17 至 2026-11-23 對比 2026-10-27 至 2026-11-16
+    </div>
+  </footer>
 </body>
 </html>
